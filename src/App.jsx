@@ -10,11 +10,13 @@ import Admin from "./pages/Admin.jsx";
 import Chat from "./pages/Chat.jsx";
 import Inventory from "./pages/Inventory.jsx";
 import { InventoryProvider } from "./context/InventoryContext.jsx";
+import { CartProvider } from "./context/CartContext.jsx";
 
 export default function App() {
   return (
     <AuthProvider>
       <InventoryProvider>
+      <CartProvider>
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
@@ -63,6 +65,7 @@ export default function App() {
         <Route path="/chat" element={<Chat />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
+      </CartProvider>
       </InventoryProvider>
     </AuthProvider>
   );

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
+import { useCart } from "../context/CartContext.jsx";
 
 const categorias = ["Todos", "Cozinha", "Sala de Estar", "Quarto", "Banheiro", "Escritório"];
 
@@ -86,6 +87,8 @@ export default function Biblioteca() {
   const [modalAberto, setModalAberto] = useState(false);
   const [designEditando, setDesignEditando] = useState(null);
   const [formulario, setFormulario] = useState(designVazio);
+  const [designDetalhado, setDesignDetalhado] = useState(null);
+  const { addToCart, items } = useCart();
   const busca = searchParams.get("busca") || "";
   const isAdmin = true;
 
@@ -171,6 +174,10 @@ export default function Biblioteca() {
     if (window.confirm("Deseja excluir este design?")) {
       setDesigns((atuais) => atuais.filter((design) => design.id !== id));
     }
+
+    function adicionarDesign(design) {
+      addToCart(design);
+    }
   }
 
   return (
@@ -234,6 +241,14 @@ export default function Biblioteca() {
                 <span className="catalog-label">{design.tags?.join(" · ") || "Projeto sob medida"}</span>
                 <h2>{design.title}</h2>
                 <p className="catalog-description">{design.description}</p>
+                <div className="catalog-card-actions">
+                  <button className="small-action" type="button" onClick={() => setDesignDetalhado(design)}>
+                    Ver detalhes
+                  </button>
+                  <button className="button button-primary catalog-cart-button" type="button" onClick={() => adicionarDesign(design)}>
+                    {items.some((item) => item.id === design.id) ? "Adicionar novamente" : "Adicionar ao projeto"}
+                  </button>
+                </div>
                 {isAdmin && (
                   <div className="catalog-admin-actions">
                     <button className="small-action" type="button" onClick={() => abrirEdicao(design)}>
@@ -256,6 +271,31 @@ export default function Biblioteca() {
           </div>
         )}
       </main>
+
+      {designDetalhado && (
+        <div className="design-modal-backdrop" role="presentation" onMouseDown={() => setDesignDetalhado(null)}>
+          <section className="design-details-modal" role="dialog" aria-modal="true" aria-labelledby="design-details-title" onMouseDown={(event) => event.stopPropagation()}>
+            <div className={`design-details-image ${designDetalhado.tone}`}>
+              {designDetalhado.image ? <img src={designDetalhado.image} alt="" /> : <span aria-hidden="true">{designDetalhado.icon}</span>}
+            </div>
+            <div className="design-details-content">
+              <div className="design-modal-heading">
+                <div>
+                  <span className="eyebrow eyebrow-dark">{designDetalhado.category}</span>
+                  <h2 id="design-details-title">{designDetalhado.title}</h2>
+                </div>
+                <button className="modal-close" type="button" onClick={() => setDesignDetalhado(null)} aria-label="Fechar detalhes">×</button>
+              </div>
+              <p>{designDetalhado.description}</p>
+              <span className="design-budget">Orçamento sob consulta</span>
+              <div className="design-details-tags">{designDetalhado.tags?.map((tag) => <span key={tag}>{tag}</span>)}</div>
+              <button className="button button-primary details-cart-button" type="button" onClick={() => adicionarDesign(designDetalhado)}>
+                {items.some((item) => item.id === designDetalhado.id) ? "Adicionar mais uma unidade" : "Adicionar ao projeto"}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
 
       {modalAberto && (
         <div className="design-modal-backdrop" role="presentation" onMouseDown={fecharModal}>

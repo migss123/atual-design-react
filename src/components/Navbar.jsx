@@ -1,11 +1,16 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logoside1.png";
 import Breadcrumbs from "./Breadcrumbs.jsx";
+import { useState } from "react";
+import { useCart } from "../context/CartContext.jsx";
+import CartDrawer from "./CartDrawer.jsx";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const busca = new URLSearchParams(location.search).get("busca") || "";
+  const [cartOpen, setCartOpen] = useState(false);
+  const { itemCount, toast } = useCart();
 
   function atualizarBusca(event) {
     const valor = event.target.value;
@@ -24,10 +29,11 @@ export default function Navbar() {
             <span aria-hidden="true">◯</span>
             <span>Minha conta</span>
           </NavLink>
-          <NavLink to="/biblioteca-designs" className="nav-action nav-cart">
-            <span aria-hidden="true">＋</span>
-            <span>Projetos salvos</span>
-          </NavLink>
+          <button className="nav-action nav-cart-button" type="button" onClick={() => setCartOpen(true)}>
+            <span className="cart-icon" aria-hidden="true">🛒</span>
+            <span>Carrinho</span>
+            <strong className="cart-badge">{itemCount}</strong>
+          </button>
         </div>
       </div>
 
@@ -63,6 +69,8 @@ export default function Navbar() {
       </div>
 
       <Breadcrumbs />
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+      {toast && <div className="cart-toast" role="status">{toast}</div>}
     </header>
   );
 }

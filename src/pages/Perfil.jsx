@@ -51,7 +51,6 @@ export default function Perfil() {
             <a className="profile-menu-link active" href="#dados">Dados pessoais</a>
             <a className="profile-menu-link" href="/biblioteca-designs">Projetos salvos</a>
             <a className="profile-menu-link" href="#atendimento">Atendimento</a>
-            <a className="profile-menu-link profile-admin-link" href="/admin">Administração</a>
           </aside>
           <section className="profile-card" id="dados">
             <div className="profile-card-heading">

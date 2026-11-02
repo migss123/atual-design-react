@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -13,6 +14,13 @@ const initialMessages = [
 export default function Chat() {
   const [mensagens, setMensagens] = useState(initialMessages);
   const [mensagem, setMensagem] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.cartSummary) {
+      setMensagem(location.state.cartSummary);
+    }
+  }, [location.state]);
 
   function enviarMensagem(event) {
     event.preventDefault();
