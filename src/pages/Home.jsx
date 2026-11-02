@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
+import { Link } from "react-router-dom";
 
 const categorias = [
   { icon: "▦", title: "Cozinhas", text: "Funcionalidade para sua rotina" },
@@ -94,7 +95,7 @@ export default function Home() {
               <span className="eyebrow eyebrow-dark">Curadoria Atual Design</span>
               <h2 id="projects-title">Projetos em destaque</h2>
             </div>
-            <a className="text-link" href="/biblioteca">Conheça nossa biblioteca →</a>
+            <a className="text-link" href="/biblioteca-designs">Conheça nossa biblioteca →</a>
           </div>
           <div className="project-grid">
             {projetos.map((projeto) => (
@@ -112,7 +113,7 @@ export default function Home() {
                   <strong className="project-price">{projeto.price}</strong>
                   <div className="project-footer">
                     <span className="negotiable">● Negociável</span>
-                    <a href="/biblioteca" className="project-link">Ver detalhes</a>
+                    <a href="/biblioteca-designs" className="project-link">Ver detalhes</a>
                   </div>
                 </div>
               </article>
@@ -126,7 +127,7 @@ export default function Home() {
             <h2 id="consulting-title">Vamos criar o ambiente dos seus sonhos?</h2>
             <p>Conte o que você imaginou. Nosso time transforma suas ideias em um projeto feito para sua rotina.</p>
           </div>
-          <a className="button button-light" href="mailto:atualdesigntorres@gmail.com">Bate-papo com um vendedor</a>
+          <Link className="button button-light" to="/chat">Bate-papo com um vendedor</Link>
         </section>
       </main>
 

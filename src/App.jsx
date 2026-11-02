@@ -6,10 +6,15 @@ import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import Perfil from "./pages/Perfil.jsx";
 import Biblioteca from "./pages/Biblioteca.jsx";
+import Admin from "./pages/Admin.jsx";
+import Chat from "./pages/Chat.jsx";
+import Inventory from "./pages/Inventory.jsx";
+import { InventoryProvider } from "./context/InventoryContext.jsx";
 
 export default function App() {
   return (
     <AuthProvider>
+      <InventoryProvider>
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
@@ -24,6 +29,14 @@ export default function App() {
           }
         />
         <Route
+          path="/biblioteca-designs"
+          element={
+            <ProtectedRoute>
+              <Biblioteca />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/perfil"
           element={
             <ProtectedRoute>
@@ -31,8 +44,26 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/estoque"
+          element={
+            <ProtectedRoute>
+              <Inventory />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/chat" element={<Chat />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
+      </InventoryProvider>
     </AuthProvider>
   );
 }
